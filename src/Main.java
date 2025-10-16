@@ -4,25 +4,9 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        // un sistema para representar diferentes tipos de que , la clase padre se llama libro
-        // con los atributos titulo, autor, precio y cantidad de ejemplares,tiene metodo
-        // mostrar libro, tiene una clase hija que se llama libro digital,que tiene como
-        // atributo tamaño y disponibilidad, tiene metodo mostrar libro, el metodo prestar y
-        // el metodo de volver,tiene otra clase hija que se llama libro impreso que tiene le
-        // atributo peso,    tiene metodo mostrar libro (metodo poliformico),
-        // metodo prestar y devolver. COnsideraciones para tener en cuenta, 1.no se puede prestar
-        // un libro que no tiene disponibilidad. 2. no se puede devolver mas de dos libros. 3.
-        // toca validar q no se pueda pedir prestado cantidades no existentes.
-        // diagrama de clases, codigo y subir al repositorio
-        // main con menu de interacciones que permita, 1.crear un libro impreso, 2. crear un libro
-        // digital, 3. mostrar los libros, 4.buscar un libro por titulo cono interaccion de prestar
-        // y devolver que tenga submenu donde al encontrar el libro te haga ese menu con el la
-        // aceptacion de si le presto el libro o no
-
         Scanner sc = new Scanner(System.in);
-        ArrayList<libro>libros = new ArrayList<>();
+        ArrayList<libro> listaLibros = new ArrayList<>();
         int opcion;
-
 
         do {
             System.out.println("Sistema de libros ");
@@ -35,65 +19,140 @@ public class Main {
             sc.nextLine();
 
             switch (opcion) {
+
                 case 1:
-                    System.out.print("Ingrese el titulo: ");
-                    String titulo1 = sc.nextLine();
-                    System.out.print("Ingrese el autor: ");
-                    String autor1 = sc.nextLine();
-                    System.out.print("Ingrese el precio: ");
-                    double precio1 = sc.nextDouble();
-                    System.out.print("Ingrese la cantidad de libros: ");
-                    int canti1 = sc.nextInt();
-                    System.out.print("Ingrese el peso: ");
-                    double peso1 = sc.nextDouble();
-                    System.out.print("Ingrese el numero de ejemplares fisicos: ");
-                    int numE = sc.nextInt();
-
-                    libroimpreso li = new libroimpreso();
-                    libros.add(li);
-                    System.out.println("Libro creado exitosamente ");
-                    break;
-                case 2:
-                    System.out.print("Ingrese el titulo: ");
-                    String titulo2 = sc.nextLine();
-                    System.out.print("Ingrese el autor: ");
-                    String autor2 = sc.nextLine();
-                    System.out.print("Ingrese el precio: ");
-                    double precio2 = sc.nextDouble();
-                    System.out.print("Ingrese la cantidad de libros: ");
-                    int canti2 = sc.nextInt();
-                    System.out.print("Ingrese el tamaño: ");
-                    double tamaño2 = sc.nextDouble();
+                    System.out.println("Crear libro impreso");
+                    System.out.print("Titulo: ");
+                    String tituloI = sc.nextLine();
+                    System.out.print("Autor: ");
+                    String autorI = sc.nextLine();
+                    System.out.print("Precio: ");
+                    double precioI = sc.nextDouble();
+                    System.out.print("Cantidad de ejemplares: ");
+                    int cantidadI = sc.nextInt();
+                    System.out.print("Peso del libro: ");
+                    String peso = sc.nextLine();
                     sc.nextLine();
-                    System.out.print("Disponibilidad: ");
-                    String disponible2 = sc.nextLine();
 
-                    librodigital li2 = new librodigital();
-                    libros.add(li2);
-                    System.out.println("Libro creado exitosamente ");
+                    libro libroTempI = new libro();
+                    String codigoI = libroTempI.generarCodigo("fisico");
+
+                    libroimpreso li = new libroimpreso(codigoI, tituloI, autorI, precioI, cantidadI, peso);
+                    listaLibros.add(li);
+                    System.out.println("Libro creado con exito " + codigoI);
                     break;
+
+                case 2:
+                    System.out.println("Crear libro digital");
+                    System.out.print("Titulo: ");
+                    String tituloD = sc.nextLine();
+                    System.out.print("Autor: ");
+                    String autorD = sc.nextLine();
+                    System.out.print("Precio: ");
+                    double precioD = sc.nextDouble();
+                    System.out.print("Cantidad de ejemplares: ");
+                    int cantidadD = sc.nextInt();
+                    System.out.print("Tamaño del archivo: ");
+                    double tamano = sc.nextDouble();
+                    sc.nextLine();
+
+                    libro libroTempD = new libro();
+                    String codigoD = libroTempD.generarCodigo("digital");
+
+                    String disponible = (cantidadD > 0) ? "disponible" : "no disponible";
+
+                    librodigital ld = new librodigital(codigoD, tituloD, autorD, precioD, cantidadD, tamano, disponible);
+                    listaLibros.add(ld);
+                    System.out.println("Libro creado con exito " + codigoD);
+                    break;
+
                 case 3:
-                    System.out.println("Lista de libros: ");
-                    if (libros.isEmpty()) {
-                        System.out.println("No hay libros registrados ");
+                    System.out.println("Lista de todos los libros:");
+                    if (listaLibros.isEmpty()) {
+                        System.out.println("No hay libros registrados" );
                     } else {
-                        for (libro l : libros) {
-                            l.mostrarlibro();
-                            System.out.println("");
+                        for (libro l : listaLibros) {
+                            System.out.println("Codigo: " + l.getCodigo());
+                            System.out.println("Titulo: " + l.getTitulo());
+                            System.out.println("Autor: " + l.getAutor());
+                            System.out.println("Precio: " + l.getPrecio());
+                            System.out.println("Cantidad: " + l.getCantidadejemplares());
                         }
                     }
                     break;
+
                 case 4:
-                    System.out.println("Lista de libros: ");
+                    System.out.print("Ingrese el titulo del libro a buscar: ");
+                    String buscar = sc.nextLine();
+                    boolean encontrado = false;
+
+                    for (libro l : listaLibros) {
+                        if (l.getTitulo().equalsIgnoreCase(buscar)) {
+                            encontrado = true;
+                            System.out.println("Libro encontrado: ");
+                            System.out.println("Codigo: " + l.getCodigo());
+                            System.out.println("Titulo: " + l.getTitulo());
+                            System.out.println("Autor: " + l.getAutor());
+                            System.out.println("Precio: " + l.getPrecio());
+
+
+                            if (l instanceof librodigital) {
+                                System.out.println("Disponibilidad: " + ((librodigital) l).getDisponible(((librodigital) l).disponible));
+                            }
+
+                            int subopcion;
+                            do {
+                                System.out.println("Submenu");
+                                System.out.println("1. Pedir prestado un libro");
+                                System.out.println("2. Devolver libro");
+                                System.out.println("0. Volver al menú principal");
+                                System.out.print("Opcion: ");
+                                subopcion = sc.nextInt();
+                                sc.nextLine();
+
+                                switch (subopcion) {
+                                    case 1:
+                                        if (l instanceof libroimpreso) {
+                                            ((libroimpreso) l).prestar();
+                                        } else if (l instanceof librodigital) {
+                                            ((librodigital) l).prestar();
+                                        }
+                                        break;
+
+                                    case 2:
+                                        if (l instanceof libroimpreso) {
+                                            ((libroimpreso) l).devolver();
+                                        } else if (l instanceof librodigital) {
+                                            ((librodigital) l).devolver();
+                                        }
+                                        break;
+
+                                    case 0:
+                                        System.out.println("Volviendo al menú principal ");
+                                        break;
+
+                                    default:
+                                        System.out.println("Opcion invalida ");
+                                }
+                            } while (subopcion != 0);
+                            break;
+                        }
+                    }
+
+                    if (!encontrado) {
+                        System.out.println("Libro no encontrado");
+                    }
+                    break;
+
                 case 5:
-                    System.out.println("Salir");
+                    System.out.println("Saliendo del programa ");
+                    break;
 
+                default:
+                    System.out.println("Opcion invalida ");
+                    break;
             }
-        }
 
-
-
-
-
+        } while (opcion != 5);
     }
 }

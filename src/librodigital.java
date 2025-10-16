@@ -1,14 +1,15 @@
 public class librodigital extends libro{
 
-    private double tamaño;
-    private String disponible;
+    protected double tamaño;
+    protected String disponible;
 
 
    public librodigital(){
    }
 
-    public librodigital(String titulo, String autor, double precio, int cantidadEjemplares, double tamaño, String disponible) {
-        super(titulo, autor, precio, cantidadEjemplares);
+
+    public librodigital(String codigo, String titulo, String autor, double precio, int cantidadejemplares, double tamaño, String disponible) {
+        super(codigo, titulo, autor, precio, cantidadejemplares);
         this.tamaño = tamaño;
         this.disponible = disponible;
     }

@@ -1,19 +1,19 @@
 public class libroimpreso extends libro {
-    private double peso;
+    private String peso;
+
 
     public libroimpreso() {
     }
 
-    public libroimpreso(String titulo, String autor, double precio, int cantidadEjemplares, double peso) {
-        super(titulo, autor, precio, cantidadEjemplares);
+    public libroimpreso(String codigo, String titulo, String autor, double precio, int cantidadejemplares, String peso) {
+        super(codigo, titulo, autor, precio, cantidadejemplares);
         this.peso = peso;
     }
 
-
-    public double getPeso() {
+    public String getPeso() {
         return peso;
     }
-    public void setPeso(double peso) {
+    public void setPeso(String peso) {
         this.peso = peso;
     }
 
